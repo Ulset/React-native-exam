@@ -1,8 +1,8 @@
 export const chartConfig = {
   config: {
-    backgroundColor: '#e26a00',
-    backgroundGradientFrom: '#fb8c00',
-    backgroundGradientTo: '#ffa726',
+    backgroundColor: '#ffffff',
+    backgroundGradientFrom: '#9f2b2b',
+    backgroundGradientTo: '#d23f3f',
     decimalPlaces: 2, // optional, defaults to 2dp
     color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
     labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
@@ -12,7 +12,7 @@ export const chartConfig = {
     propsForDots: {
       r: '6',
       strokeWidth: '2',
-      stroke: '#ffa726'
+      stroke: '#ff0016'
     }
   },
   style: {

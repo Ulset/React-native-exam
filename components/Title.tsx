@@ -1,9 +1,8 @@
 import { StyleSheet, Text } from 'react-native';
 import React, { FC } from 'react';
-import PropTypes from 'prop-types';
 
 interface props {
-  text: String
+  text: string;
 }
 
 export const Title: FC<props> = ({ text }) => {
@@ -12,6 +11,6 @@ export const Title: FC<props> = ({ text }) => {
 
 const styles = StyleSheet.create({
   title: {
-    fontSize: 30
+    fontSize: 28
   }
-})
+});
