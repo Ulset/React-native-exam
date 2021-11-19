@@ -3,7 +3,7 @@ export const chartConfig = {
     backgroundColor: '#ffffff',
     backgroundGradientFrom: '#9f2b2b',
     backgroundGradientTo: '#d23f3f',
-    decimalPlaces: 2, // optional, defaults to 2dp
+    decimalPlaces: 0, // optional, defaults to 2dp
     color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
     labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
     style: {

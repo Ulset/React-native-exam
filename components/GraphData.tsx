@@ -18,7 +18,6 @@ export const GraphData = ({ name, data, chartConf }: displayModuleProps) => {
         yAxisSuffix="k"
         yAxisInterval={1}
         chartConfig={chartConf ? chartConf : chartConfig.config}
-        bezier
         style={chartConfig.style}
       />
     </View>

@@ -9,7 +9,10 @@ export const SelectCountryModal = ({ visible, setModalVisible, setCountry }: pro
         transparent={true}
         visible={visible}
       >
-        <TouchableWithoutFeedback onPressIn={() => setModalVisible(false)}>
+        <TouchableWithoutFeedback onPressIn={() => {
+          setCountry("Norway");
+          setModalVisible(false);
+        }}>
           <View style={styles.topView} />
         </TouchableWithoutFeedback>
         <View style={styles.containerView}>

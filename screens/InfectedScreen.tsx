@@ -4,50 +4,52 @@ import { GraphData } from '../components/GraphData';
 import { useQuery } from 'react-query';
 import { LineChartData } from 'react-native-chart-kit/dist/line-chart/LineChart';
 
-export const InfectedScreen = ({ country }: {country: string}) => {
+export const InfectedScreen = ({ country }: { country: string }) => {
   const { data, isLoading } = useQuery<QueryReturnType>(['getInfectedChartData', country], () => {
     const scope = country === 'World' ? 'all' : country;
-    return fetch(`https://disease.sh/v3/covid-19/historical/${scope}?lastdays=30`).then(r => r.json()).then((d) => {
+    return fetch(`https://disease.sh/v3/covid-19/historical/${scope}?lastdays=330`).then(r => r.json()).then((d) => {
+      //The response is slightly different based on World vs country data
+      if (country !== 'World') {
+        d = d.timeline;
+      }
+
       // Converting the API response fram day to day basis -> month by month
       Object.keys(d).forEach((type: string) => {
         const typeObject = d[type];
 
-        const testData: LineChartData = {
-          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Des'],
-          datasets: [
-            {
-              data: [
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100
-              ]
-            }
-          ]
+        const dayKeys = Object.keys(typeObject);
+
+        //Converts to: {month: [100, 200, 300]} etc.
+        let monthData: { [key: string]: number[] } = {};
+        dayKeys.forEach(dateString => {
+          const date = new Date(dateString);
+          const month = date.toLocaleString('default', { month: 'short' });
+          if (month in monthData) {
+            monthData[month].push(typeObject[dateString]);
+          } else {
+            monthData[month] = [typeObject[dateString]];
+          }
+        });
+
+        //Converts to LineChartData
+        const allMonths = Object.keys(monthData);
+        d[type] = {
+          labels: allMonths,
+          datasets: [{ data: allMonths.map(month => Math.floor(Math.max(...monthData[month]) / 1000)) }]
         };
-        d[type] = testData
       });
-      return d as QueryReturnType
+      return d;
     });
   });
 
-
-  if(isLoading || !data){
-    return <Text>Loading!</Text>
+  if (isLoading || !data) {
+    return <Text>Loading!</Text>;
   }
 
   return (
     <SafeAreaView>
       <ScrollView style={{ paddingTop: 10 }}>
-        <GraphData name={country} data={data.cases} />
+        <GraphData name={'Infected'} data={data.cases} />
         <GraphData name={'Dead'} data={data.deaths} />
         <GraphData name={'Recovered'} data={data.recovered} />
       </ScrollView>
