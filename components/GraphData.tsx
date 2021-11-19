@@ -8,12 +8,12 @@ import { AbstractChartConfig } from 'react-native-chart-kit/dist/AbstractChart';
 
 export const GraphData = ({ name, data, chartConf }: displayModuleProps) => {
   return (
-    <View style={styles.dataContainer}>
+    <View style={graphDataStyles.dataContainer}>
       <Title text={name} />
-      <View style={styles.lineBreakView} />
+      <View style={graphDataStyles.lineBreakView} />
       <LineChart
         data={data}
-        width={styles.dataContainer.width - styles.dataContainer.padding * 2}
+        width={graphDataStyles.dataContainer.width - graphDataStyles.dataContainer.padding * 2}
         height={220}
         yAxisSuffix="k"
         yAxisInterval={1}
@@ -30,7 +30,7 @@ interface displayModuleProps {
   chartConf?: AbstractChartConfig
 }
 
-const styles = StyleSheet.create({
+export const graphDataStyles = StyleSheet.create({
   lineBreakView: {
     height: 1,
     alignSelf: 'center',

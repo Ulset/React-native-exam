@@ -23,10 +23,17 @@ function Main() {
   const [country, setCountry] = useState('World');
   const [modalVisible, setModalVisible] = useState(false);
 
-  const { data: countries, isLoading: countriesLoading } = useQuery('getCountries', () => {
-    return new Promise((resolve => {
-      setTimeout(() => resolve('ewa'), 2000);
-    }));
+  //Fetches available countries
+  const { data: countries, isLoading: countriesLoading } = useQuery<string[]>('getCountries', () => {
+    return fetch("https://disease.sh/v3/covid-19/jhucsse").then(r => r.json()).then(d => {
+      let output: string[] = []
+      d.forEach((el: {country: string}) => {
+        if(!output.includes(el.country)){
+          output.push(el.country)
+        }
+      })
+      return output
+    })
   });
 
   const SetCountryButton = () => {
@@ -38,7 +45,10 @@ function Main() {
 
   return (
     <NavigationContainer>
-      <SelectCountryModal visible={modalVisible} setModalVisible={setModalVisible} setCountry={setCountry} />
+      <SelectCountryModal visible={modalVisible}
+                          setModalVisible={setModalVisible}
+                          countries={countries}
+                          setCountry={setCountry} />
       <Tab.Navigator screenOptions={{ headerRight: SetCountryButton }}>
         <Tab.Screen name={'Infections'}
                     options={{ tabBarIcon: ({ size, color }) => <Ionicons name={'body-outline'} size={size} color={color} /> }}>
