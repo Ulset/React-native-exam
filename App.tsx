@@ -25,15 +25,15 @@ function Main() {
 
   //Fetches available countries
   const { data: countries, isLoading: countriesLoading } = useQuery<string[]>('getCountries', () => {
-    return fetch("https://disease.sh/v3/covid-19/jhucsse").then(r => r.json()).then(d => {
-      let output: string[] = []
-      d.forEach((el: {country: string}) => {
-        if(!output.includes(el.country)){
-          output.push(el.country)
+    return fetch('https://disease.sh/v3/covid-19/jhucsse').then(r => r.json()).then(d => {
+      let output: string[] = [];
+      d.forEach((el: { country: string }) => {
+        if (!output.includes(el.country)) {
+          output.push(el.country);
         }
-      })
-      return output
-    })
+      });
+      return ['World', ...output];
+    });
   });
 
   const SetCountryButton = () => {
