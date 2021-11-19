@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { ActivityIndicator, Button, Text, View } from 'react-native';
+import { ActivityIndicator, Button, View } from 'react-native';
 import { SelectCountryModal } from './components/SelectCountryModal';
 import { Ionicons } from '@expo/vector-icons';
 import { InfectedScreen } from './screens/InfectedScreen';
-import { VaccinatedScreen } from './screens/VaccinatedScreen';
+import { InfoScreen } from './screens/InfoScreen';
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
 
 const Tab = createBottomTabNavigator();
@@ -16,7 +16,7 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <Main />
     </QueryClientProvider>
-  )
+  );
 }
 
 function Main() {
@@ -30,9 +30,9 @@ function Main() {
   });
 
   const SetCountryButton = () => {
-    return <View style={{ marginRight: 7}}>
+    return <View style={{ marginRight: 7 }}>
       {countriesLoading ? <ActivityIndicator /> :
-        <Button title={country} onPress={() => setModalVisible(true)} /> }
+        <Button title={country} onPress={() => setModalVisible(true)} />}
     </View>;
   };
 
@@ -44,9 +44,13 @@ function Main() {
                     options={{ tabBarIcon: ({ size, color }) => <Ionicons name={'body-outline'} size={size} color={color} /> }}>
           {props => <InfectedScreen {...props} country={country} />}
         </Tab.Screen>
-        <Tab.Screen name={'Vaccinated'}
-                    options={{ tabBarIcon: ({ size, color }) => <Ionicons name={'medkit-outline'} size={size} color={color} /> }}>
-          {props => <VaccinatedScreen {...props} />}
+        <Tab.Screen name={'Data'}
+                    options={{
+                      tabBarIcon: ({ size, color }) => {
+                        return <Ionicons name={'information-circle-outline'} size={size} color={color} />;
+                      }
+                    }}>
+          {props => <InfoScreen {...props} />}
         </Tab.Screen>
       </Tab.Navigator>
     </NavigationContainer>
