@@ -4,8 +4,6 @@ import { GraphData } from '../components/GraphData';
 
 // @ts-ignore
 export const InfectedScreen = ({country}) => {
-  console.log("screen rerender");
-  console.log(country);
   const testData = {
     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Des'],
     datasets: [

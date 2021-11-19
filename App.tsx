@@ -1,32 +1,35 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { CountriesScreen } from './screens/CountriesScreen';
-import { Button } from 'react-native';
+import { Button, View } from 'react-native';
 import { routes } from './static/routes';
+import { SelectCountryModal } from './components/SelectCountryModal';
+import { InfectedScreen } from './screens/InfectedScreen';
+import { VaccinatedScreen } from './screens/VaccinatedScreen';
 
 const Tab = createBottomTabNavigator();
 
 export default function App() {
   const [country, setCountry] = useState('World');
   const [modalVisible, setModalVisible] = useState(false);
-  const SetCountryComponent = () => {
-    return <Button title={country} onPress={() => setModalVisible(true)} />;
-  };
 
-  const specificDataScreens = routes.map(({ name, Component }) => {
-    // These needs the currently selected country state
-    return (
-      <Tab.Screen name={name} key={name}>
-        {props => <Component {...props} country={country} />}
-      </Tab.Screen>
-    );
-  });
+  const SetCountryButton = () => {
+    return <View style={{marginRight: 5}}>
+      <Button title={country} onPress={() => setModalVisible(true)} />
+    </View>;
+  };
 
   return (
     <NavigationContainer>
-      <Tab.Navigator screenOptions={{ headerRight: SetCountryComponent }}>
-        {specificDataScreens}
+      <SelectCountryModal visible={modalVisible} setModalVisible={setModalVisible} setCountry={setCountry} />
+      <Tab.Navigator screenOptions={{ headerRight: SetCountryButton }}>
+        <Tab.Screen name={'Infections'}>
+          {props => <InfectedScreen {...props} country={country} />}
+        </Tab.Screen>
+        <Tab.Screen name={'Vaccinated'}>
+          {props => <VaccinatedScreen {...props} />}
+        </Tab.Screen>
         <Tab.Screen name="Countries" component={CountriesScreen} />
       </Tab.Navigator>
     </NavigationContainer>
