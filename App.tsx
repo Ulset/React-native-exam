@@ -23,7 +23,7 @@ function Main() {
   const [country, setCountry] = useState('World');
   const [modalVisible, setModalVisible] = useState(false);
 
-  //Fetches available countries
+  //Fetches available countries that can be selected to get info about.
   const { data: countries, isLoading: countriesLoading } = useQuery<string[]>('getCountries', () => {
     return fetch('https://disease.sh/v3/covid-19/jhucsse').then(r => r.json()).then(d => {
       let output: string[] = [];
@@ -43,6 +43,7 @@ function Main() {
     </View>;
   };
 
+  //Returns a simple tab navigator, plus a Modal that can be displayed to choose a different country.
   return (
     <NavigationContainer>
       <SelectCountryModal visible={modalVisible}

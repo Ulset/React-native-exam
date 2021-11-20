@@ -43,6 +43,7 @@ export const InfectedScreen = ({ country }: { country: string }) => {
   });
 
   if (isLoading || !data) {
+    //TODO New loading screen.
     return <Text>Loading!</Text>;
   }
 

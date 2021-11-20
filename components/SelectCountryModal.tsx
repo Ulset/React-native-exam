@@ -1,11 +1,15 @@
 import { FlatList, Modal, StyleSheet, Text, TouchableHighlight, TouchableWithoutFeedback, View } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
+import SearchBar from './SearchBar';
 
 export const SelectCountryModal = ({ visible, setModalVisible, setCountry, countries }: props) => {
+  const [search, setSearch] = useState('');
+
   const changeCountry = (country: string) => {
-    setCountry(country)
-    setModalVisible(false)
-  }
+    setCountry(country);
+    setModalVisible(false);
+  };
+  const countriesFiltered = countries?.filter(el => el.startsWith(search))
   return (
     <>
       <Modal
@@ -19,21 +23,21 @@ export const SelectCountryModal = ({ visible, setModalVisible, setCountry, count
           <View style={styles.topView} />
         </TouchableWithoutFeedback>
         <View style={styles.containerView}>
-          <FlatList data={countries ?? []}
-                    renderItem={({ item }) => <ClickableCountry item={item} onClick={()=>changeCountry(item)}/>}
+          <SearchBar value={search} onChange={setSearch}/>
+          <FlatList data={countriesFiltered ?? []}
+                    renderItem={({ item }) => <ClickableCountry item={item} onClick={() => changeCountry(item)} />}
                     keyExtractor={(item) => item} />
         </View>
       </Modal>
     </>
-
   );
 };
 
 const ClickableCountry = ({ item, onClick }: { item: string, onClick: () => void }) => {
   return (
     <TouchableHighlight onPress={onClick}>
-      <View>
-        <Text>{item}</Text>
+      <View style={styles.countryContainer}>
+        <Text style={{ fontSize: 20 }}>{item}</Text>
       </View>
     </TouchableHighlight>
   );
@@ -54,7 +58,13 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.58,
     shadowRadius: 16.00,
-    elevation: 24
+    elevation: 24,
+    paddingTop: 10
+  },
+  countryContainer: {
+    padding: 10,
+    borderBottomColor: '#cccccc',
+    borderBottomWidth: 0.5
   }
 });
 
