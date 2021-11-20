@@ -1,17 +1,17 @@
 import React from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 
-const SearchBar = ({value, onChange}: Props) => {
- return (
-   <View style={styles.container}>
-    <TextInput placeholder={'Search'}
-               returnKeyType={'done'}
-               value={value}
-               onChangeText={onChange}
-               autoCorrect={false}
-               style={styles.textInput}/>
-   </View>
- );
+const SearchBar = ({ value, onChange }: Props) => {
+  return (
+    <View style={styles.container}>
+      <TextInput placeholder={'Search'}
+                 returnKeyType={'done'}
+                 value={value}
+                 onChangeText={onChange}
+                 autoCorrect={false}
+                 style={styles.textInput} />
+    </View>
+  );
 };
 
 interface Props {
@@ -33,6 +33,6 @@ const styles = StyleSheet.create({
     height: 40,
     fontSize: 18
   }
-})
+});
 
 export default SearchBar;

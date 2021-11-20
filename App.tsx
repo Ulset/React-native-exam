@@ -7,11 +7,27 @@ import { Ionicons } from '@expo/vector-icons';
 import { InfectedScreen } from './screens/InfectedScreen';
 import { InfoScreen } from './screens/InfoScreen';
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import WelcomeScreen from './screens/WelcomeScreen';
 
 const Tab = createBottomTabNavigator();
 const queryClient = new QueryClient();
 
 export default function App() {
+  //Welcome screen to show the faults with the API.
+  const [seenWelcomeScreen, setSeenWelcomeScreen] = useState(false);
+  /*TODO Uncommment this code.
+  AsyncStorage.getItem('seenWelcomeScreen').then(d => {
+    if(!d){
+      setSeenWelcomeScreen(false)
+    }
+  })
+  */
+
+  if(!seenWelcomeScreen){
+    return <WelcomeScreen setSeen={() => setSeenWelcomeScreen(true)}/>;
+  }
+
   return (
     <QueryClientProvider client={queryClient}>
       <Main />

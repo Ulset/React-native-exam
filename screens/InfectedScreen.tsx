@@ -35,7 +35,7 @@ export const InfectedScreen = ({ country }: { country: string }) => {
         const allMonths = Object.keys(monthData);
         d[type] = {
           labels: allMonths,
-          datasets: [{ data: allMonths.map(month => Math.floor(Math.max(...monthData[month]) / 1000)) }]
+          datasets: [{ data: allMonths.map(month => Math.floor(Math.max(...monthData[month]))) }]
         };
       });
       return d;

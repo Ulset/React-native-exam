@@ -7,9 +7,10 @@ export const SelectCountryModal = ({ visible, setModalVisible, setCountry, count
 
   const changeCountry = (country: string) => {
     setCountry(country);
+    setSearch('');
     setModalVisible(false);
   };
-  const countriesFiltered = countries?.filter(el => el.startsWith(search))
+  const countriesFiltered = countries?.filter(el => el.startsWith(search));
   return (
     <>
       <Modal
@@ -23,7 +24,7 @@ export const SelectCountryModal = ({ visible, setModalVisible, setCountry, count
           <View style={styles.topView} />
         </TouchableWithoutFeedback>
         <View style={styles.containerView}>
-          <SearchBar value={search} onChange={setSearch}/>
+          <SearchBar value={search} onChange={setSearch} />
           <FlatList data={countriesFiltered ?? []}
                     renderItem={({ item }) => <ClickableCountry item={item} onClick={() => changeCountry(item)} />}
                     keyExtractor={(item) => item} />
@@ -35,7 +36,7 @@ export const SelectCountryModal = ({ visible, setModalVisible, setCountry, count
 
 const ClickableCountry = ({ item, onClick }: { item: string, onClick: () => void }) => {
   return (
-    <TouchableHighlight onPress={onClick}>
+    <TouchableHighlight onPress={onClick} activeOpacity={0.3} underlayColor={'#EFEFEF'}>
       <View style={styles.countryContainer}>
         <Text style={{ fontSize: 20 }}>{item}</Text>
       </View>
