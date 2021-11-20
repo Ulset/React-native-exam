@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button, Dimensions, SafeAreaView, StyleSheet, Text, View } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const WelcomeScreen = ({ setSeen }: { setSeen: () => void }) => {
   return (
@@ -14,9 +13,7 @@ const WelcomeScreen = ({ setSeen }: { setSeen: () => void }) => {
         </Text>
       </View>
       <View>
-        <Button title={'Alright!'} onPress={() => {
-          AsyncStorage.setItem('seenWelcomeScreen', "yes").then(setSeen)
-        }} />
+        <Button title={'Alright!'} onPress={setSeen} />
       </View>
     </SafeAreaView>
   );

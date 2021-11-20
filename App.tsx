@@ -16,7 +16,9 @@ export default function App() {
   });
 
   if (!seenWelcomeScreen) {
-    return <WelcomeScreen setSeen={() => setSeenWelcomeScreen(true)} />;
+    return <WelcomeScreen setSeen={() => {
+      AsyncStorage.setItem('seenWelcomeScreen', 'yes').then(() => setSeenWelcomeScreen(true));
+    }} />;
   }
 
   return (
