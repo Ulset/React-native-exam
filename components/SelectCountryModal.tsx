@@ -1,35 +1,28 @@
-import { FlatList, Modal, StyleSheet, Text, TouchableHighlight, TouchableWithoutFeedback, View } from 'react-native';
+import { FlatList, StyleSheet, Text, TouchableHighlight, TouchableWithoutFeedback, View } from 'react-native';
 import React, { useState } from 'react';
 import SearchBar from './SearchBar';
+import { NavigationProp } from '@react-navigation/native';
 
-export const SelectCountryModal = ({ visible, setModalVisible, setCountry, countries }: props) => {
+export const SelectCountryModal = ({ navigation, setCountry, countries }: props) => {
   const [search, setSearch] = useState('');
 
   const changeCountry = (country: string) => {
     setCountry(country);
     setSearch('');
-    setModalVisible(false);
+    navigation.goBack();
   };
   const countriesFiltered = countries?.filter(el => el.startsWith(search));
   return (
     <>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={visible}
-      >
-        <TouchableWithoutFeedback onPressIn={() => {
-          setModalVisible(false);
-        }}>
-          <View style={styles.topView} />
-        </TouchableWithoutFeedback>
-        <View style={styles.containerView}>
-          <SearchBar value={search} onChange={setSearch} />
-          <FlatList data={countriesFiltered ?? []}
-                    renderItem={({ item }) => <ClickableCountry item={item} onClick={() => changeCountry(item)} />}
-                    keyExtractor={(item) => item} />
-        </View>
-      </Modal>
+      <TouchableWithoutFeedback onPressIn={() => navigation.goBack()}>
+        <View style={styles.topView} />
+      </TouchableWithoutFeedback>
+      <View style={styles.containerView}>
+        <SearchBar value={search} onChange={setSearch} />
+        <FlatList data={countriesFiltered ?? []}
+                  renderItem={({ item }) => <ClickableCountry item={item} onClick={() => changeCountry(item)} />}
+                  keyExtractor={(item) => item} />
+      </View>
     </>
   );
 };
@@ -70,8 +63,7 @@ const styles = StyleSheet.create({
 });
 
 interface props {
-  visible: boolean;
-  setModalVisible: (b: boolean) => void;
+  navigation: NavigationProp<any>;
   setCountry: (country: string) => void;
   countries: string[] | undefined;
 }

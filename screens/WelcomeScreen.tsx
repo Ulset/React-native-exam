@@ -15,8 +15,7 @@ const WelcomeScreen = ({ setSeen }: { setSeen: () => void }) => {
       </View>
       <View>
         <Button title={'Alright!'} onPress={() => {
-          //TODO Lagre til asyncstorage 'seenWelcomeScreen' så den ikke vises igjen.
-          setSeen()
+          AsyncStorage.setItem('seenWelcomeScreen', "yes").then(setSeen)
         }} />
       </View>
     </SafeAreaView>
