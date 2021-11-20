@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 import { NavigationContainer } from '@react-navigation/native';
 import { TabController } from './TabController';
-import { SelectCountryModal } from '../components/SelectCountryModal';
+import { SelectCountryModal } from '../screens/SelectCountryModal';
 import { createStackNavigator } from '@react-navigation/stack';
 
 const Stack = createStackNavigator();

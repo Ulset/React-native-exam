@@ -1,6 +1,6 @@
 import { FlatList, StyleSheet, Text, TouchableHighlight, TouchableWithoutFeedback, View } from 'react-native';
 import React, { useState } from 'react';
-import SearchBar from './SearchBar';
+import SearchBar from '../components/SearchBar';
 import { NavigationProp } from '@react-navigation/native';
 
 export const SelectCountryModal = ({ navigation, setCountry, countries }: props) => {
