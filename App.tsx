@@ -7,7 +7,6 @@ import { MainController } from './controllers/MainController';
 const queryClient = new QueryClient();
 
 export default function App() {
-  //Welcome screen to show the faults with the API.
   const [seenWelcomeScreen, setSeenWelcomeScreen] = useState(true);
   AsyncStorage.getItem('seenWelcomeScreen').then(d => {
     if (!d) {
@@ -15,6 +14,7 @@ export default function App() {
     }
   });
 
+  //Welcome screen to show the faults with the API.
   if (!seenWelcomeScreen) {
     return <WelcomeScreen setSeen={() => {
       AsyncStorage.setItem('seenWelcomeScreen', 'yes').then(() => setSeenWelcomeScreen(true));

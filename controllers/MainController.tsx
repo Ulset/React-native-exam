@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 import { NavigationContainer } from '@react-navigation/native';
 import { TabController } from './TabController';
-import { SelectCountryModal } from '../screens/SelectCountryModal';
 import { createStackNavigator } from '@react-navigation/stack';
+import { SelectCountryModal } from '../screens/SelectCountryModal';
 
 const Stack = createStackNavigator();
 
 export function MainController() {
+  //The country being viwed, can be a supported a country defined in 'countries' variable or 'World'.
   const [country, setCountry] = useState('World');
 
   //Fetches available countries that can be selected to get info about.

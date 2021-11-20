@@ -18,7 +18,7 @@ export const TabController = ({ navigation, country, loading }: TabScreenProps) 
   return (
     <Tab.Navigator screenOptions={{ headerRight: SetCountryButton }}>
       <Tab.Group>
-        <Tab.Screen name={'Infection'}
+        <Tab.Screen name={'Totals'}
                     options={{ tabBarIcon: ({ size, color }) => <Ionicons name={'body-outline'} size={size} color={color} /> }}>
           {props => <InfectedScreen {...props} country={country} />}
         </Tab.Screen>

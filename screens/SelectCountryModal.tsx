@@ -11,7 +11,7 @@ export const SelectCountryModal = ({ navigation, setCountry, countries }: props)
     setSearch('');
     navigation.goBack();
   };
-  const countriesFiltered = countries?.filter(el => el.startsWith(search));
+  const countriesFiltered = countries?.filter(el => el.toLowerCase().startsWith(search.toLowerCase()));
   return (
     <>
       <TouchableWithoutFeedback onPressIn={() => navigation.goBack()}>
