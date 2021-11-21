@@ -1,11 +1,7 @@
 import { StyleSheet, Text } from 'react-native';
-import React, { FC } from 'react';
+import React from 'react';
 
-interface props {
-  text: string;
-}
-
-export const Title: FC<props> = ({ text }) => {
+export const Title = ({ text }: props) => {
   return <Text style={styles.title}>{text}</Text>;
 };
 
@@ -14,3 +10,7 @@ const styles = StyleSheet.create({
     fontSize: 28
   }
 });
+
+interface props {
+  text: string;
+}

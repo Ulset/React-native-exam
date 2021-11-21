@@ -25,7 +25,7 @@ export function MainController() {
     });
   });
 
-  //Returns a simple navigation, with a added stack group for changing country..
+  //Returns a simple navigation, with a added stack group for changing country.
   return (
     <NavigationContainer>
       <Stack.Navigator>

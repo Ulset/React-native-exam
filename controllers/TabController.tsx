@@ -18,7 +18,7 @@ export const TabController = ({ navigation, country, loading }: TabScreenProps) 
   return (
     <Tab.Navigator screenOptions={{ headerRight: SetCountryButton }}>
       <Tab.Group>
-        <Tab.Screen name={'Totals'}
+        <Tab.Screen name={'Status'}
                     options={{ tabBarIcon: ({ size, color }) => <Ionicons name={'body-outline'} size={size} color={color} /> }}>
           {props => <InfectedScreen {...props} country={country} />}
         </Tab.Screen>
@@ -28,7 +28,7 @@ export const TabController = ({ navigation, country, loading }: TabScreenProps) 
                         return <Ionicons name={'information-circle-outline'} size={size} color={color} />;
                       }
                     }}>
-          {props => <InfoScreen {...props} />}
+          {props => <InfoScreen {...props} country={country}/>}
         </Tab.Screen>
       </Tab.Group>
     </Tab.Navigator>
