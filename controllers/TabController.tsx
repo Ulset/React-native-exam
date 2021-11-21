@@ -10,7 +10,7 @@ const Tab = createBottomTabNavigator();
 export const TabController = ({ navigation, country, loading }: TabScreenProps) => {
   const SetCountryButton = () => {
     return <View style={{ marginRight: 7 }}>
-      {loading ? <ActivityIndicator /> :
+      {loading ? <ActivityIndicator color={'#999999'}/> :
         <Button title={country} onPress={() => navigation.navigate('SelectCountry')} />}
     </View>;
   };

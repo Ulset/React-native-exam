@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 import { NavigationContainer } from '@react-navigation/native';
 import { TabController } from './TabController';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, StackNavigationOptions } from '@react-navigation/stack';
 import { SelectCountryModal } from '../screens/SelectCountryModal';
+import { Platform } from 'react-native';
 
 const Stack = createStackNavigator();
 
@@ -24,7 +25,7 @@ export function MainController() {
     });
   });
 
-  //Returns a simple navigation, with a added stack group for modal view.
+  //Returns a simple navigation, with a added stack group for changing country..
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -33,12 +34,20 @@ export function MainController() {
             {props => <TabController {...props} country={country} loading={countriesLoading} />}
           </Stack.Screen>
         </Stack.Group>
-        <Stack.Group screenOptions={{ presentation: 'modal', headerShown: false, cardStyle: { backgroundColor: 'transparent' } }}>
-          <Stack.Screen name={'SelectCountry'} options={{ gestureEnabled: false }}>
+        <Stack.Group screenOptions={modalStackSettings}>
+          <Stack.Screen name={'SelectCountry'} options={{title: "Select country"}}>
             {props => <SelectCountryModal {...props} setCountry={setCountry} countries={countries} />}
           </Stack.Screen>
         </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>
   );
+}
+
+//Need special treatment for Android, modal view doesnt work for some reason.
+const modalStackSettings: StackNavigationOptions = {
+  presentation: Platform.OS === 'android' ? undefined : 'modal',
+  headerShown: Platform.OS === 'android',
+  cardStyle: { backgroundColor: Platform.OS === 'android' ? '#ffffff' : 'transparent' },
+  gestureEnabled: Platform.OS === 'android'
 }

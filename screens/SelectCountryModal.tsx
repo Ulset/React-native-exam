@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, Text, TouchableHighlight, TouchableWithoutFeedback, View } from 'react-native';
+import { FlatList, Platform, StyleSheet, Text, TouchableHighlight, TouchableWithoutFeedback, View } from 'react-native';
 import React, { useState } from 'react';
 import SearchBar from '../components/SearchBar';
 import { NavigationProp } from '@react-navigation/native';
@@ -12,11 +12,16 @@ export const SelectCountryModal = ({ navigation, setCountry, countries }: props)
     navigation.goBack();
   };
   const countriesFiltered = countries?.filter(el => el.toLowerCase().startsWith(search.toLowerCase()));
-  return (
-    <>
+  const topTransparentView = () => {
+    return (
       <TouchableWithoutFeedback onPressIn={() => navigation.goBack()}>
         <View style={styles.topView} />
       </TouchableWithoutFeedback>
+    )
+  }
+  return (
+    <>
+      {Platform.OS !== 'android' ? topTransparentView() : null}
       <View style={styles.containerView}>
         <SearchBar value={search} onChange={setSearch} />
         <FlatList data={countriesFiltered ?? []}

@@ -4,6 +4,7 @@ import { GraphData } from '../components/GraphData';
 import { useQuery } from 'react-query';
 import { LineChartData } from 'react-native-chart-kit/dist/line-chart/LineChart';
 import LoadingScreen from './LoadingScreen';
+import { months } from '../static/month';
 
 export const InfectedScreen = ({ country }: { country: string }) => {
   const { data, isLoading } = useQuery<QueryReturnType>(['getInfectedChartData', country], () => {
@@ -25,13 +26,14 @@ export const InfectedScreen = ({ country }: { country: string }) => {
           let monthData: { [key: string]: number[] } = {};
           dayKeys.forEach(dateString => {
             const date = new Date(dateString);
-            const month = date.toLocaleString('default', { month: 'short' });
+            const month = months[date.getMonth()];
             if (month in monthData) {
               monthData[month].push(typeObject[dateString]);
             } else {
               monthData[month] = [typeObject[dateString]];
             }
           });
+
 
           //Converts to LineChartData
           const allMonths = Object.keys(monthData);

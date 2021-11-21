@@ -3,6 +3,9 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import WelcomeScreen from './screens/WelcomeScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MainController } from './controllers/MainController';
+import { LogBox } from 'react-native';
+
+LogBox.ignoreLogs(['Setting a timer']);
 
 const queryClient = new QueryClient();
 

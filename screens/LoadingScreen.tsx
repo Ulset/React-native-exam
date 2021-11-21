@@ -2,11 +2,11 @@ import React from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
 const LoadingScreen = () => {
- return (
-  <View style={styles.container}>
-    <ActivityIndicator size={'large'}/>
-  </View>
- );
+  return (
+    <View style={styles.container}>
+      <ActivityIndicator color={'#999999'} size={'large'} />
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -15,6 +15,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   }
-})
+});
 
 export default LoadingScreen;

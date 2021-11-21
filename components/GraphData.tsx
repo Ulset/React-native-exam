@@ -19,6 +19,7 @@ export const GraphData = ({ name, data, chartConf }: displayModuleProps) => {
       setYAxisSuffix(' K')
     }
   }
+
   return (
     <View style={graphDataStyles.dataContainer}>
       <Title text={name} />
