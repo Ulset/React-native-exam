@@ -1,24 +1,26 @@
 import React from 'react';
 import { Dimensions, StyleSheet, Text, View, ViewStyle } from 'react-native';
+import { formatNumber } from '../helpers/NumberFormatter';
 
 const BarDataPoint = ({ style, data }: props) => {
-  let leftSize = data.leftCompare.amount;
-  let rightSize = data.rightCompare.amount;
-  while (leftSize > 10 || rightSize > 10) {
-    //If the amount is eg 1231421 and 2023121, reduce both until they are below 10 so flexbox doesnt make a mess.
-    leftSize /= 10;
-    rightSize /= 10;
-  }
+  let percent = (data.leftCompare.amount/data.rightCompare.amount)*100;
+  let percentString = Math.floor(percent).toString()
 
   return (
     <View style={{ ...styles.container, ...style }}>
       <View style={styles.textContainer}>
-        <Text style={{ ...styles.barLegendTest, textAlign: 'left' }}>{data.leftCompare.name}</Text>
-        <Text style={{ ...styles.barLegendTest, textAlign: 'right' }}>{data.rightCompare.name}</Text>
+        <View style={{flex: 1}}>
+          <Text style={styles.compareText}>{data.leftCompare.name}</Text>
+          <Text style={styles.compareValueText}>{formatNumber(data.leftCompare.amount)}</Text>
+        </View>
+        <View style={{flex: 1}}>
+          <Text style={{...styles.compareText, textAlign: 'right'}}>{data.rightCompare.name}</Text>
+          <Text style={{...styles.compareValueText, textAlign: 'right'}}>{formatNumber(data.rightCompare.amount)}</Text>
+        </View>
       </View>
       <View style={styles.barContainer}>
-        <View style={{ flex: leftSize, backgroundColor: data.leftColor ?? '#77C66E', height: 10 }} />
-        <View style={{ flex: rightSize, backgroundColor: data.rightColor ?? '#a92222', height: 10 }} />
+        <View style={{ width: `${percentString}%`, backgroundColor: data.leftColor ?? '#77C66E', height: 10 }} />
+        <View style={{ flex: 1, backgroundColor: data.rightColor ?? '#a92222', height: 10 }} />
       </View>
     </View>
   );
@@ -45,9 +47,11 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row'
   },
-  barLegendTest: {
-    flex: 1,
+  compareText: {
     fontSize: 20
+  },
+  compareValueText: {
+    color: '#333333'
   }
 });
 

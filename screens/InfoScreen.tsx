@@ -10,8 +10,7 @@ export const InfoScreen = (props: props) => {
   const { data, isLoading } = useQuery<QueryReturnValue>(['countryInfo', country], () => {
     const apiString = country === 'World' ? 'all' : `countries/${country}`;
     return fetch(`https://disease.sh/v3/covid-19/${apiString}?strict=true`)
-      .then(r => r.json())
-      .then((d: QueryReturnValue) => {
+      .then(r => r.json()).then((d: QueryReturnValue) => {
         if (country === 'World') {
           //API call for the whole world return slightly different data, post-proccesing a bit
           d.country = 'World';
@@ -23,23 +22,24 @@ export const InfoScreen = (props: props) => {
         //Also pre-process the data used for the bar charts, so this is only done when theres new data.
         d.barData = [
           {
-            leftCompare: { name: 'Active cases', amount: d.casesPerOneMillion },
-            rightCompare: { name: 'Per million', amount: 1000000 },
+            leftCompare: { name: 'Cases', amount: d.cases }, rightCompare: { name: 'Population', amount: d.population },
+            leftColor: '#A92222FF',
+            rightColor: '#77C66E'
           },
+          { leftCompare: { name: 'Recovered', amount: d.recovered }, rightCompare: { name: 'Cases', amount: d.cases } },
+          { leftCompare: { name: 'Active cases', amount: d.active }, rightCompare: { name: 'Cases', amount: d.cases } },
+          { leftCompare: { name: 'Deaths', amount: d.deaths }, rightCompare: { name: 'Cases', amount: d.cases } },
           {
-            leftCompare: { name: 'Survived', amount: d.recovered },
-            rightCompare: { name: 'Deaths', amount: d.deaths },
-          },
-          {
-            leftCompare: { name: 'Total tests', amount: d.tests },
-            rightCompare: { name: 'Population', amount: d.population },
+            leftCompare: { name: 'Total tests', amount: d.tests }, rightCompare: { name: 'Population', amount: d.population },
             leftColor: '#3375cc',
             rightColor: '#77C66E'
           },
           {
-            leftCompare: { name: 'Recovered', amount: d.recovered },
-            rightCompare: { name: 'Total cases', amount: d.cases }
+            leftCompare: { name: 'Active cases', amount: d.active }, rightCompare: { name: 'Population', amount: d.population },
+            leftColor: '#A92222FF',
+            rightColor: '#77C66E'
           },
+          { leftCompare: { name: 'Critical', amount: d.critical }, rightCompare: { name: 'Active cases', amount: d.active } }
         ];
 
         return d;
@@ -51,7 +51,7 @@ export const InfoScreen = (props: props) => {
   }
 
   //Homemade horizontal bar charts!
-  const barDataPoints = data.barData.map((el, i) => <BarDataPoint data={el} key={i} style={{marginBottom: 5}}/>);
+  const barDataPoints = data.barData.map((el, i) => <BarDataPoint data={el} key={i} style={{ marginBottom: 5 }} />);
 
   return (
     <ScrollView>
@@ -81,7 +81,6 @@ const styles = StyleSheet.create({
     width: dim.width,
     backgroundColor: '#FFFFFF',
     alignSelf: 'center',
-    height: 500,
     borderRadius: 15,
     borderBottomEndRadius: 0,
     borderBottomStartRadius: 0,
