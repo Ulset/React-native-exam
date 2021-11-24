@@ -4,6 +4,7 @@ import { LineChart } from 'react-native-chart-kit';
 import React, { useState } from 'react';
 import { LineChartData } from 'react-native-chart-kit/dist/line-chart/LineChart';
 import { AbstractChartConfig } from 'react-native-chart-kit/dist/AbstractChart';
+import { chartConfig } from '../static/chartConfig';
 
 export const GraphData = ({ name, data, chartConf }: displayModuleProps) => {
   //The data number can sometimes be a bit large, especially when displaying data from the whole world
@@ -42,29 +43,6 @@ interface displayModuleProps {
   data: LineChartData,
   chartConf?: AbstractChartConfig
 }
-
-const chartConfig = {
-  config: {
-    backgroundColor: '#ffffff',
-    backgroundGradientFrom: '#9f2b2b',
-    backgroundGradientTo: '#d23f3f',
-    decimalPlaces: 0, // optional, defaults to 2dp
-    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-    labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-    style: {
-      borderRadius: 16
-    },
-    propsForDots: {
-      r: '6',
-      strokeWidth: '2',
-      stroke: '#ff0016'
-    }
-  },
-  style: {
-    marginVertical: 8,
-    borderRadius: 16
-  }
-};
 
 const graphDataStyles = StyleSheet.create({
   lineBreakView: {

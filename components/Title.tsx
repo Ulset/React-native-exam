@@ -7,7 +7,8 @@ export const Title = ({ text }: props) => {
 
 const styles = StyleSheet.create({
   title: {
-    fontSize: 28
+    fontSize: 28,
+    color: '#363636'
   }
 });
 

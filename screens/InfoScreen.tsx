@@ -1,8 +1,9 @@
 import React from 'react';
-import { Dimensions, Image, ScrollView, StyleSheet, Text } from 'react-native';
+import { Dimensions, ImageBackground, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
 import { useQuery } from 'react-query';
 import LoadingScreen from './LoadingScreen';
+import BarDataPoint, { BarData } from '../components/BarDataPoint';
 
 export const InfoScreen = (props: props) => {
   const { country } = props;
@@ -10,7 +11,7 @@ export const InfoScreen = (props: props) => {
     const apiString = country === 'World' ? 'all' : `countries/${country}`;
     return fetch(`https://disease.sh/v3/covid-19/${apiString}?strict=true`)
       .then(r => r.json())
-      .then(d => {
+      .then((d: QueryReturnValue) => {
         if (country === 'World') {
           //API call for the whole world return slightly different data, post-proccesing a bit
           d.country = 'World';
@@ -18,6 +19,29 @@ export const InfoScreen = (props: props) => {
             flag: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Flag_of_the_United_Nations.svg/700px-Flag_of_the_United_Nations.svg.png'
           };
         }
+
+        //Also pre-process the data used for the bar charts, so this is only done when theres new data.
+        d.barData = [
+          {
+            leftCompare: { name: 'Active cases', amount: d.active },
+            rightCompare: { name: 'Population', amount: d.population },
+          },
+          {
+            leftCompare: { name: 'Survived', amount: d.recovered },
+            rightCompare: { name: 'Deaths', amount: d.deaths },
+          },
+          {
+            leftCompare: { name: 'Total tests', amount: d.tests },
+            rightCompare: { name: 'Population', amount: d.population },
+            leftColor: '#3375cc',
+            rightColor: '#77C66E'
+          },
+          {
+            leftCompare: { name: 'Recovered', amount: d.recovered },
+            rightCompare: { name: 'Total cases', amount: d.cases }
+          },
+        ];
+
         return d;
       });
   });
@@ -26,23 +50,72 @@ export const InfoScreen = (props: props) => {
     return <LoadingScreen />;
   }
 
+  //Homemade horizontal bar charts!
+  const barDataPoints = data.barData.map((el, i) => <BarDataPoint data={el} key={i} style={{marginBottom: 5}}/>);
+
   return (
     <ScrollView>
-        <Image source={{ uri: data.countryInfo.flag }} style={styles.flagPicture} resizeMode={'cover'} />
-        <Text style={{fontSize: 40, marginLeft: 10, marginTop: 10}}>{data.country}</Text>
+      <ImageBackground source={{ uri: data.countryInfo.flag }} style={styles.flagPicture} resizeMode={'cover'} />
+      <ScrollView style={{ marginTop: -40, paddingTop: 20 }}>
+        <View style={styles.contentContainer}>
+          <Text style={styles.countryHeadline}>{data.country}</Text>
+          {barDataPoints}
+        </View>
+      </ScrollView>
     </ScrollView>
   );
 };
 
+const dim = Dimensions.get('window');
 const styles = StyleSheet.create({
   container: {
-    width: Dimensions.get('window').width * 0.95,
+    width: dim.width * 0.95,
     alignItems: 'center',
     alignSelf: 'center'
   },
   flagPicture: {
-    width: Dimensions.get('window').width,
-    height: 200,
+    width: dim.width,
+    height: 200
+  },
+  contentContainer: {
+    width: dim.width,
+    backgroundColor: '#FFFFFF',
+    alignSelf: 'center',
+    height: 500,
+    borderRadius: 15,
+    borderBottomEndRadius: 0,
+    borderBottomStartRadius: 0,
+    paddingTop: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 9
+    },
+    shadowOpacity: 0.7,
+    shadowRadius: 11.95,
+    elevation: 15
+  },
+  countryHeadline: {
+    fontSize: 40,
+    alignSelf: 'center',
+    color: '#4b4b4b',
+    marginBottom: 5
+  },
+  dataPointContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    width: '90%',
+    alignSelf: 'center'
+  },
+  dataPoint: {
+    width: '48%',
+    aspectRatio: 1,
+    borderColor: '#e3e3e3',
+    borderWidth: 2,
+    marginBottom: 10,
+    borderRadius: 3
   }
 });
 
@@ -77,5 +150,6 @@ interface QueryReturnValue {
   todayCases: number,
   todayDeaths: number,
   todayRecovered: number,
-  updated: number
+  updated: number,
+  barData: BarData[]
 }
