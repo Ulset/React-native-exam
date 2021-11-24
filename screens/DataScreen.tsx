@@ -1,16 +1,17 @@
 import React from 'react';
 import { Dimensions, ImageBackground, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { NavigationProp, RouteProp } from '@react-navigation/native';
 import { useQuery } from 'react-query';
 import LoadingScreen from './LoadingScreen';
 import BarDataPoint, { BarData } from '../components/BarDataPoint';
+import { queryToBarData } from '../helpers/QueryToBarData';
 
-export const InfoScreen = (props: props) => {
-  const { country } = props;
-  const { data, isLoading } = useQuery<QueryReturnValue>(['countryInfo', country], () => {
+export const DataScreen = ({ country }: { country: string }) => {
+  //Simple info screen to show key points in a selected country
+
+  const { data, isLoading } = useQuery<WorldometersProccesedResponse>(['countryInfo', country], () => {
     const apiString = country === 'World' ? 'all' : `countries/${country}`;
     return fetch(`https://disease.sh/v3/covid-19/${apiString}?strict=true`)
-      .then(r => r.json()).then((d: QueryReturnValue) => {
+      .then(r => r.json()).then((d: WorldometersAPIResponse) => {
         if (country === 'World') {
           //API call for the whole world return slightly different data, post-proccesing a bit
           d.country = 'World';
@@ -20,29 +21,9 @@ export const InfoScreen = (props: props) => {
         }
 
         //Also pre-process the data used for the bar charts, so this is only done when theres new data.
-        d.barData = [
-          {
-            leftCompare: { name: 'Cases', amount: d.cases }, rightCompare: { name: 'Population', amount: d.population },
-            leftColor: '#A92222FF',
-            rightColor: '#77C66E'
-          },
-          { leftCompare: { name: 'Recovered', amount: d.recovered }, rightCompare: { name: 'Cases', amount: d.cases } },
-          { leftCompare: { name: 'Active cases', amount: d.active }, rightCompare: { name: 'Cases', amount: d.cases } },
-          { leftCompare: { name: 'Deaths', amount: d.deaths }, rightCompare: { name: 'Cases', amount: d.cases } },
-          {
-            leftCompare: { name: 'Total tests', amount: d.tests }, rightCompare: { name: 'Population', amount: d.population },
-            leftColor: '#3375cc',
-            rightColor: '#77C66E'
-          },
-          {
-            leftCompare: { name: 'Active cases', amount: d.active }, rightCompare: { name: 'Population', amount: d.population },
-            leftColor: '#A92222FF',
-            rightColor: '#77C66E'
-          },
-          { leftCompare: { name: 'Critical', amount: d.critical }, rightCompare: { name: 'Active cases', amount: d.active } }
-        ];
+        const barData = queryToBarData(d);
 
-        return d;
+        return {country: {name: d.country, flag: d.countryInfo.flag}, barData};
       });
   });
 
@@ -55,10 +36,10 @@ export const InfoScreen = (props: props) => {
 
   return (
     <ScrollView>
-      <ImageBackground source={{ uri: data.countryInfo.flag }} style={styles.flagPicture} resizeMode={'cover'} />
+      <ImageBackground source={{ uri: data.country.flag }} style={styles.flagPicture} resizeMode={'cover'} />
       <ScrollView style={{ marginTop: -40, paddingTop: 20 }}>
         <View style={styles.contentContainer}>
-          <Text style={styles.countryHeadline}>{data.country}</Text>
+          <Text style={styles.countryHeadline}>{data.country.name}</Text>
           {barDataPoints}
         </View>
       </ScrollView>
@@ -118,13 +99,7 @@ const styles = StyleSheet.create({
   }
 });
 
-interface props {
-  route: RouteProp<any>;
-  navigation: NavigationProp<any>;
-  country: string;
-}
-
-interface QueryReturnValue {
+export interface WorldometersAPIResponse {
   active: number,
   activePerOneMillion: number,
   affectedCountries: number,
@@ -151,4 +126,12 @@ interface QueryReturnValue {
   todayRecovered: number,
   updated: number,
   barData: BarData[]
+}
+
+export interface WorldometersProccesedResponse {
+  country: {
+    name: string,
+    flag: string
+  };
+  barData: BarData[];
 }

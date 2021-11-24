@@ -6,8 +6,10 @@ import { LineChartData } from 'react-native-chart-kit/dist/line-chart/LineChart'
 import LoadingScreen from './LoadingScreen';
 import { months } from '../static/month';
 
-export const InfectedScreen = ({ country }: { country: string }) => {
-  const { data, isLoading } = useQuery<QueryReturnType>(['getInfectedChartData', country], () => {
+export const StatusScreen = ({ country }: { country: string }) => {
+  //Screen to show linecharts of the development of the desease.
+
+  const { data, isLoading } = useQuery<InfectedLinechartData>(['getInfectedChartData', country], () => {
     const scope = country === 'World' ? 'all' : country;
     return fetch(`https://disease.sh/v3/covid-19/historical/${scope}?lastdays=330`)
       .then(r => r.json()).then((d) => {
@@ -19,7 +21,6 @@ export const InfectedScreen = ({ country }: { country: string }) => {
         // Converting the API response fram day to day basis -> month by month
         Object.keys(d).forEach((type: string) => {
           const typeObject = d[type];
-
           const dayKeys = Object.keys(typeObject);
 
           //Converts to: {month: [100, 200, 300]} etc.
@@ -34,7 +35,6 @@ export const InfectedScreen = ({ country }: { country: string }) => {
             }
           });
 
-
           //Converts to LineChartData
           const allMonths = Object.keys(monthData);
           d[type] = {
@@ -47,7 +47,6 @@ export const InfectedScreen = ({ country }: { country: string }) => {
   });
 
   if (isLoading || !data) {
-    //TODO New loading screen.
     return <LoadingScreen />;
   }
 
@@ -62,7 +61,7 @@ export const InfectedScreen = ({ country }: { country: string }) => {
   );
 };
 
-interface QueryReturnType {
+interface InfectedLinechartData {
   cases: LineChartData;
   deaths: LineChartData;
   recovered: LineChartData;

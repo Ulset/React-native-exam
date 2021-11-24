@@ -7,6 +7,8 @@ import { AbstractChartConfig } from 'react-native-chart-kit/dist/AbstractChart';
 import { chartConfig } from '../static/chartConfig';
 
 export const GraphData = ({ name, data, chartConf }: displayModuleProps) => {
+  //Simple linechart to show LineChartData with a title and some styling
+
   //The data number can sometimes be a bit large, especially when displaying data from the whole world
   // Therefore im post-processing it a bit.
   const [yAxisSuffix, setYAxisSuffix] = useState('');

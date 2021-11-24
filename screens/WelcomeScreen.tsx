@@ -2,14 +2,15 @@ import React from 'react';
 import { Button, Dimensions, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 
 const WelcomeScreen = ({ setSeen }: { setSeen: () => void }) => {
+  //Simple welcome screen to show problems i had with the API.
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.textContainer}>
         <Text style={styles.title}>Welcome!</Text>
         <Text style={styles.text}>
-          The API im using has a problem where the data isnt fully complete, this means that sometimes
-          the graphs will show 0 deaths/recovered etc. This isnt a bug with the code, the data simply isnt
-          there.
+          Im currently using 2 different covid APIs from 'https://disease.sh/'. The one used on the tab 'Status' has some faults where
+          sometimes it will return 0 recovered/infected/dead in a timeframe, this isnt a bug with my code, the data simply isnt there.
         </Text>
       </View>
       <View>

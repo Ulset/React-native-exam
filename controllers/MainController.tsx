@@ -35,7 +35,7 @@ export function MainController() {
           </Stack.Screen>
         </Stack.Group>
         <Stack.Group screenOptions={modalStackSettings}>
-          <Stack.Screen name={'SelectCountry'} options={{title: "Select country"}}>
+          <Stack.Screen name={'SelectCountry'} options={{ title: 'Select country' }}>
             {props => <SelectCountryModal {...props} setCountry={setCountry} countries={countries} />}
           </Stack.Screen>
         </Stack.Group>
@@ -50,4 +50,4 @@ const modalStackSettings: StackNavigationOptions = {
   headerShown: Platform.OS === 'android',
   cardStyle: { backgroundColor: Platform.OS === 'android' ? '#ffffff' : 'transparent' },
   gestureEnabled: Platform.OS === 'android'
-}
+};

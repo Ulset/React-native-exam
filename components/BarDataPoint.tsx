@@ -3,6 +3,8 @@ import { Dimensions, StyleSheet, Text, View, ViewStyle } from 'react-native';
 import { formatNumber } from '../helpers/NumberFormatter';
 
 const BarDataPoint = ({ style, data }: props) => {
+  //Shows a comparison between two numbers with a horiozontal bar chart.
+
   let percent = (data.leftCompare.amount/data.rightCompare.amount)*100;
   let percentString = Math.floor(percent).toString()
 
@@ -19,8 +21,8 @@ const BarDataPoint = ({ style, data }: props) => {
         </View>
       </View>
       <View style={styles.barContainer}>
-        <View style={{ width: `${percentString}%`, backgroundColor: data.leftColor ?? '#77C66E', height: 10 }} />
-        <View style={{ flex: 1, backgroundColor: data.rightColor ?? '#a92222', height: 10 }} />
+        <View style={{ width: `${percentString}%`, backgroundColor: data.leftColor ?? '#A92222FF', height: 10 }} />
+        <View style={{ flex: 1, backgroundColor: data.rightColor ?? '#77C66E', height: 10 }} />
       </View>
     </View>
   );

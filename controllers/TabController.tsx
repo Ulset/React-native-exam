@@ -1,16 +1,16 @@
 import { ActivityIndicator, Button, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { InfectedScreen } from '../screens/InfectedScreen';
-import { InfoScreen } from '../screens/InfoScreen';
+import { DataScreen } from '../screens/DataScreen';
 import React from 'react';
 import { NavigationProp } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { StatusScreen } from '../screens/StatusScreen';
 
 const Tab = createBottomTabNavigator();
 export const TabController = ({ navigation, country, loading }: TabScreenProps) => {
   const SetCountryButton = () => {
     return <View style={{ marginRight: 7 }}>
-      {loading ? <ActivityIndicator color={'#999999'}/> :
+      {loading ? <ActivityIndicator color={'#999999'} /> :
         <Button title={country} onPress={() => navigation.navigate('SelectCountry')} />}
     </View>;
   };
@@ -20,7 +20,7 @@ export const TabController = ({ navigation, country, loading }: TabScreenProps) 
       <Tab.Group>
         <Tab.Screen name={'Status'}
                     options={{ tabBarIcon: ({ size, color }) => <Ionicons name={'body-outline'} size={size} color={color} /> }}>
-          {props => <InfectedScreen {...props} country={country} />}
+          {props => <StatusScreen {...props} country={country} />}
         </Tab.Screen>
         <Tab.Screen name={'Data'}
                     options={{
@@ -28,7 +28,7 @@ export const TabController = ({ navigation, country, loading }: TabScreenProps) 
                         return <Ionicons name={'information-circle-outline'} size={size} color={color} />;
                       }
                     }}>
-          {props => <InfoScreen {...props} country={country}/>}
+          {props => <DataScreen {...props} country={country} />}
         </Tab.Screen>
       </Tab.Group>
     </Tab.Navigator>

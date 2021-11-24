@@ -4,6 +4,8 @@ import SearchBar from '../components/SearchBar';
 import { NavigationProp } from '@react-navigation/native';
 
 export const SelectCountryModal = ({ navigation, setCountry, countries }: props) => {
+  //Component used for selecting a new country, is used both modally and as a full screen.
+
   const [search, setSearch] = useState('');
 
   const changeCountry = (country: string) => {
@@ -13,6 +15,7 @@ export const SelectCountryModal = ({ navigation, setCountry, countries }: props)
   };
   const countriesFiltered = countries?.filter(el => el.toLowerCase().startsWith(search.toLowerCase()));
   const topTransparentView = () => {
+    //Clicable area on top to close the modal (if the component is displayed as a modal)
     return (
       <TouchableWithoutFeedback onPressIn={() => navigation.goBack()}>
         <View style={styles.topView} />

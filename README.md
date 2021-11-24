@@ -8,3 +8,4 @@
 
 ## Fornøyd med
 * Lagde min egen search bar, enkel men elegant
+* BarDataPoint ble veldig nice
