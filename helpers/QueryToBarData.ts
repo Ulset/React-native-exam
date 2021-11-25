@@ -1,7 +1,7 @@
 import { BarData } from '../components/BarDataPoint';
 import { WorldometersAPIResponse } from '../screens/DataScreen';
 
-//Converts data from a query to homemade BarData, moved it out since it looked ugly in the code:)
+//Converts data from a query to BarData
 export const queryToBarData = (data: WorldometersAPIResponse): BarData[] => {
   return [
     { leftCompare: { name: 'Cases', amount: data.cases }, rightCompare: { name: 'Population', amount: data.population } },

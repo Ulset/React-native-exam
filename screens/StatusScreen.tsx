@@ -1,15 +1,16 @@
 import React from 'react';
-import { SafeAreaView, ScrollView } from 'react-native';
+import { RefreshControl, SafeAreaView, ScrollView } from 'react-native';
 import { GraphData } from '../components/GraphData';
 import { useQuery } from 'react-query';
 import { LineChartData } from 'react-native-chart-kit/dist/line-chart/LineChart';
 import LoadingScreen from './LoadingScreen';
-import { months } from '../static/month';
+import { months } from '../static/months';
+import { useRefetchQuery } from '../hooks/useRefetchQuery';
 
 export const StatusScreen = ({ country }: { country: string }) => {
   //Screen to show linecharts of the development of the desease.
 
-  const { data, isLoading } = useQuery<InfectedLinechartData>(['getInfectedChartData', country], () => {
+  const { data, isLoading, refetch } = useQuery<InfectedLinechartData>(['getInfectedChartData', country], () => {
     const scope = country === 'World' ? 'all' : country;
     return fetch(`https://disease.sh/v3/covid-19/historical/${scope}?lastdays=330`)
       .then(r => r.json()).then((d) => {
@@ -45,6 +46,7 @@ export const StatusScreen = ({ country }: { country: string }) => {
         return d;
       });
   });
+  const { isRefetching, doRefresh } = useRefetchQuery(refetch);
 
   if (isLoading || !data) {
     return <LoadingScreen />;
@@ -52,7 +54,8 @@ export const StatusScreen = ({ country }: { country: string }) => {
 
   return (
     <SafeAreaView>
-      <ScrollView style={{ paddingTop: 10 }}>
+      <ScrollView style={{ paddingTop: 10 }}
+                  refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={doRefresh} />}>
         <GraphData name={'Infected'} data={data.cases} />
         <GraphData name={'Dead'} data={data.deaths} />
         <GraphData name={'Recovered'} data={data.recovered} />

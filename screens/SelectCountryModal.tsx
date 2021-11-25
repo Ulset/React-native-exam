@@ -20,8 +20,8 @@ export const SelectCountryModal = ({ navigation, setCountry, countries }: props)
       <TouchableWithoutFeedback onPressIn={() => navigation.goBack()}>
         <View style={styles.topView} />
       </TouchableWithoutFeedback>
-    )
-  }
+    );
+  };
   return (
     <>
       {Platform.OS !== 'android' ? topTransparentView() : null}

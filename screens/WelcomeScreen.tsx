@@ -9,8 +9,8 @@ const WelcomeScreen = ({ setSeen }: { setSeen: () => void }) => {
       <View style={styles.textContainer}>
         <Text style={styles.title}>Welcome!</Text>
         <Text style={styles.text}>
-          Im currently using 2 different covid APIs from 'https://disease.sh/'. The one used on the tab 'Status' has some faults where
-          sometimes it will return 0 recovered/infected/dead in a timeframe, this isnt a bug with my code, the data simply isnt there.
+          The data fetched for the 'Status' screen sometimes returns 0 for infections/deaths/recovered, this means that the graph sometimes will
+          look a bit odd. This isnt a bug with the code, the data simply isnt there.
         </Text>
       </View>
       <View>

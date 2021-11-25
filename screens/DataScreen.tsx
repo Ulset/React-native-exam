@@ -1,14 +1,15 @@
 import React from 'react';
-import { Dimensions, ImageBackground, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, ImageBackground, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useQuery } from 'react-query';
 import LoadingScreen from './LoadingScreen';
 import BarDataPoint, { BarData } from '../components/BarDataPoint';
 import { queryToBarData } from '../helpers/QueryToBarData';
+import { useRefetchQuery } from '../hooks/useRefetchQuery';
 
 export const DataScreen = ({ country }: { country: string }) => {
   //Simple info screen to show key points in a selected country
 
-  const { data, isLoading } = useQuery<WorldometersProccesedResponse>(['countryInfo', country], () => {
+  const { data, isLoading, refetch } = useQuery<WorldometersProccesedResponse>(['countryInfo', country], () => {
     const apiString = country === 'World' ? 'all' : `countries/${country}`;
     return fetch(`https://disease.sh/v3/covid-19/${apiString}?strict=true`)
       .then(r => r.json()).then((d: WorldometersAPIResponse) => {
@@ -23,9 +24,10 @@ export const DataScreen = ({ country }: { country: string }) => {
         //Also pre-process the data used for the bar charts, so this is only done when theres new data.
         const barData = queryToBarData(d);
 
-        return {country: {name: d.country, flag: d.countryInfo.flag}, barData};
+        return { country: { name: d.country, flag: d.countryInfo.flag }, barData };
       });
   });
+  const { isRefetching, doRefresh } = useRefetchQuery(refetch);
 
   if (isLoading || !data) {
     return <LoadingScreen />;
@@ -35,7 +37,7 @@ export const DataScreen = ({ country }: { country: string }) => {
   const barDataPoints = data.barData.map((el, i) => <BarDataPoint data={el} key={i} style={{ marginBottom: 5 }} />);
 
   return (
-    <ScrollView>
+    <ScrollView refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={doRefresh} />}>
       <ImageBackground source={{ uri: data.country.flag }} style={styles.flagPicture} resizeMode={'cover'} />
       <ScrollView style={{ marginTop: -40, paddingTop: 20 }}>
         <View style={styles.contentContainer}>

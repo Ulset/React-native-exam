@@ -31,7 +31,7 @@ export function MainController() {
       <Stack.Navigator>
         <Stack.Group>
           <Stack.Screen name={'TabMeny'} options={{ headerShown: false }}>
-            {props => <TabController {...props} country={country} loading={countriesLoading} />}
+            {props => <TabController {...props} country={country} countriesLoading={countriesLoading} />}
           </Stack.Screen>
         </Stack.Group>
         <Stack.Group screenOptions={modalStackSettings}>
@@ -44,7 +44,7 @@ export function MainController() {
   );
 }
 
-//Need special treatment for Android, modal view doesnt work for some reason.
+//Need special treatment for Android, modal view crashes the app for some reason.
 const modalStackSettings: StackNavigationOptions = {
   presentation: Platform.OS === 'android' ? undefined : 'modal',
   headerShown: Platform.OS === 'android',

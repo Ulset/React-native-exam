@@ -7,11 +7,11 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { StatusScreen } from '../screens/StatusScreen';
 
 const Tab = createBottomTabNavigator();
-export const TabController = ({ navigation, country, loading }: TabScreenProps) => {
+export const TabController = ({ navigation, country, countriesLoading }: TabScreenProps) => {
   const SetCountryButton = () => {
     return <View style={{ marginRight: 7 }}>
-      {loading ? <ActivityIndicator color={'#999999'} /> :
-        <Button title={country} onPress={() => navigation.navigate('SelectCountry')} />}
+      {countriesLoading ? <ActivityIndicator color={'#999999'} /> :
+        <Button title={country} onPress={() => navigation.navigate('SelectCountry')}/>}
     </View>;
   };
 
@@ -38,5 +38,5 @@ export const TabController = ({ navigation, country, loading }: TabScreenProps) 
 interface TabScreenProps {
   navigation: NavigationProp<any>;
   country: string;
-  loading: boolean;
+  countriesLoading: boolean;
 }
