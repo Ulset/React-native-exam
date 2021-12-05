@@ -1,12 +1,22 @@
-import React from 'react';
-import { Dimensions, StyleSheet, Text, View, ViewStyle } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { Animated, Dimensions, StyleSheet, Text, View, ViewStyle } from 'react-native';
 import { formatNumber } from '../helpers/NumberFormatter';
 
 const BarDataPoint = ({ style, data }: props) => {
   //Shows a comparison between two numbers with a horiozontal bar chart.
 
-  let percent = (data.leftCompare.amount/data.rightCompare.amount)*100;
-  let percentString = Math.floor(percent).toString()
+  let percent = Math.floor((data.leftCompare.amount/data.rightCompare.amount)*100);
+  percent = percent>100 ? 100 : percent
+
+  //Animate the data
+  const barAnimation = useRef(new Animated.Value(0)).current
+  useEffect(() => {
+    Animated.timing(barAnimation, { useNativeDriver: false, toValue: percent, duration: 1000}).start()
+  }, [barAnimation])
+  const divWidth = barAnimation.interpolate({
+    inputRange: [0, percent],
+    outputRange: ['0%', `${percent}%`]
+  })
 
   return (
     <View style={{ ...styles.container, ...style }}>
@@ -21,7 +31,7 @@ const BarDataPoint = ({ style, data }: props) => {
         </View>
       </View>
       <View style={styles.barContainer}>
-        <View style={{ width: `${percentString}%`, backgroundColor: data.leftColor ?? '#A92222FF', height: 10 }} />
+        <Animated.View style={{ width: divWidth, backgroundColor: data.leftColor ?? '#A92222FF', height: 10 }} />
         <View style={{ flex: 1, backgroundColor: data.rightColor ?? '#77C66E', height: 10 }} />
       </View>
     </View>

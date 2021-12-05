@@ -33,8 +33,11 @@ export const DataScreen = ({ country }: { country: string }) => {
     return <LoadingScreen />;
   }
 
-  //Homemade horizontal bar charts!
-  const barDataPoints = data.barData.map((el, i) => <BarDataPoint data={el} key={i} style={{ marginBottom: 5 }} />);
+  const barDataPoints = data.barData.map((el, i) => {
+    //Key has to be both i and the amount or the animation wont rerender
+    const key = `${i} ${el.leftCompare.amount}`
+    return <BarDataPoint data={el} key={key} style={{ marginBottom: 5 }} />;
+  });
 
   return (
     <ScrollView refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={doRefresh} />}>
