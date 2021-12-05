@@ -5,17 +5,17 @@ import { formatNumber } from '../helpers/NumberFormatter';
 const BarDataPoint = ({ style, data }: props) => {
   //Shows a comparison between two numbers with a horiozontal bar chart.
 
-  let percent = Math.floor((data.leftCompare.amount/data.rightCompare.amount)*100);
-  percent = percent>100 ? 100 : percent
+  let percent = (data.leftCompare.amount/data.rightCompare.amount)*100;
+  const percentFloor = Math.floor(percent<100 ? percent : 100)
 
   //Animate the data
   const barAnimation = useRef(new Animated.Value(0)).current
   useEffect(() => {
-    Animated.timing(barAnimation, { useNativeDriver: false, toValue: percent, duration: 1000}).start()
+    Animated.timing(barAnimation, { useNativeDriver: false, toValue: percentFloor, duration: 1000}).start()
   }, [barAnimation])
   const divWidth = barAnimation.interpolate({
-    inputRange: [0, percent],
-    outputRange: ['0%', `${percent}%`]
+    inputRange: [0, percentFloor],
+    outputRange: ['0%', `${percentFloor}%`]
   })
 
   return (
@@ -24,6 +24,9 @@ const BarDataPoint = ({ style, data }: props) => {
         <View style={{flex: 1}}>
           <Text style={styles.compareText}>{data.leftCompare.name}</Text>
           <Text style={styles.compareValueText}>{formatNumber(data.leftCompare.amount)}</Text>
+        </View>
+        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+          <Text>{percent.toFixed(1)} %</Text>
         </View>
         <View style={{flex: 1}}>
           <Text style={{...styles.compareText, textAlign: 'right'}}>{data.rightCompare.name}</Text>
@@ -64,6 +67,11 @@ const styles = StyleSheet.create({
   },
   compareValueText: {
     color: '#333333'
+  },
+  percentText: {
+    color: '#FFFFFF',
+    alignSelf: 'center',
+    textAlignVertical: 'center'
   }
 });
 
