@@ -1,6 +1,11 @@
 ### Exam in react native
 Exam in React Native, written in TypeScript. Data is fetched from the [disease.sh API](https://disease.sh/docs/#/).
 
+## Run guide
+1. `npm install`
+2. `expo start`
+3. Follow the in terminal instructions to launch the app in your chosen environment 
+
 ## Screenshots
 <div float='left'>
   <img width="250" alt="Graphs" src="https://user-images.githubusercontent.com/33099664/144765371-8f754035-e250-4afb-81ea-6b4340eb74a8.png" />
