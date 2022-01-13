@@ -1,5 +1,7 @@
-### Exam in react native
+# Exam in react native
 Exam in React Native, written in TypeScript. Data is fetched from the [disease.sh API](https://disease.sh/docs/#/).
+
+## Grade: `A`
 
 ## Run guide
 1. `npm install`
